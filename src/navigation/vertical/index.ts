@@ -49,6 +49,16 @@ const navigation = (): VerticalNavItemsType => {
     {
       sectionTitle: 'User Interface'
     },
+    // {
+    //   title: 'Category',
+    //   icon: Table,
+    //   path: '/category'
+    // },
+    {
+      title: 'Product',
+      icon: Table,
+      path: '/product'
+    },
     {
       title: 'Typography',
       icon: FormatLetterCase,
