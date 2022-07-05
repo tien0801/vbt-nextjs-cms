@@ -1,53 +1,94 @@
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import TableContainer from "@mui/material/TableContainer";
-import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
+import TableLayout from '@/src/components/Table';
+import { useCallback, useEffect, useState } from 'react';
+import rows from '../data/products';
+import { useColumnRender } from './common/hooks';
+import { Card, Grid } from '@mui/material';
+import Actions from '@/src/components/Actions';
+import { FormikDataType } from './common/type';
+import { useFormik } from 'formik';
+import FilterLayout from '@/src/components/Filter';
+import FilterChild from './ProductFilter';
+import { useRouter } from 'next/router';
 
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-  },
-];
+const ProductComponent = () => {
+	const { columns } = useColumnRender();
+	const router = useRouter();
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+	const [loading, setLoading] = useState(false);
+	const [total, setTotal] = useState(10);
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(10);
 
-const ProductList = () => {
-  const [rows, setRows] = useState(data);
-const [deletedRows, setDeletedRows] = useState([]);
-  return (
-    <Box sx={{ width: "100%", padding: "0 20px 30px", sm: { padding: "0 20px 30px" } }}>
-      <DataGrid
-        autoHeight
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-        onSelectionModelChange={({selectionModel}) => {
-          const rowIds = selectionModel.map(rowId => parseInt(String(rowId), 10));
-          const rowsToDelete = rows.filter(row => rowIds.includes(row.id));
-          setDeletedRows(rowsToDelete);
-        }}
-      />
-    </Box>
-  );
+	const handleSubmit = (values: FormikDataType) => {
+		console.log(values);
+	};
+
+	const formik = useFormik<FormikDataType>({
+		initialValues: {
+			name: '',
+			code: '',
+			status: '',
+			active: '',
+		},
+		onSubmit: handleSubmit,
+	});
+
+	const onFilter = () => {
+		formik.submitForm();
+	};
+
+	useEffect(() => {
+		setTotal(rows.length);
+	}, []);
+
+	const onCreate = useCallback(() => {
+		router.push(`${router.pathname}/create`);
+	}, [router]);
+
+	const onRefresh = useCallback(() => {
+		setLoading(false);
+		formik.resetForm();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const onPageChange = useCallback((page: number) => {
+		setPage(page);
+	}, []);
+
+	const onPageSize = useCallback((pageSize: number) => {
+		setPageSize(pageSize);
+	}, []);
+
+	const onConFirmDelete = useCallback((selected) => {
+		setLoading(true);
+		console.log(selected);
+		setLoading(false);
+	}, []);
+
+	return (
+		<Grid container spacing={6} mt={1}>
+			<FilterLayout formik={formik} loading={false} onFilter={onFilter} onReFresh={onRefresh}>
+				<FilterChild formik={formik} />
+			</FilterLayout>
+			<Grid item xs={12}>
+				<Card>
+					<Actions create={onCreate} refresh={onRefresh} />
+					<TableLayout
+						loading={loading}
+						rows={rows}
+						columns={columns}
+						total={total}
+						page={page}
+						pageSize={pageSize}
+						selectModels
+						onHandlePageChange={onPageChange}
+						onHandlePageSize={onPageSize}
+						onConfirmDelete={onConFirmDelete}
+					/>
+				</Card>
+			</Grid>
+		</Grid>
+	);
 };
 
-export default ProductList;
+export default ProductComponent;

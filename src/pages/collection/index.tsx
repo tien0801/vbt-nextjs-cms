@@ -1,13 +1,7 @@
-import { Card, CardHeader, Grid, Typography } from "@mui/material";
-
-const Collection = () => {
-  return (
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Typography variant="h5">Collection</Typography>
-      </Grid>
-    </Grid>
-  );
+import CollectionComponent from "@/src/features/collection";
+import React from "react";
+const Collection: React.FC = () => {
+  return <CollectionComponent/>;
 };
 
 export default Collection;

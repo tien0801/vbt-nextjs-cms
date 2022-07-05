@@ -1,0 +1,174 @@
+import React, { useState, useCallback } from 'react';
+import { TreeDataState, CustomTreeData } from '@devexpress/dx-react-grid';
+import {
+	Grid as GridTable,
+	Table,
+	TableHeaderRow,
+	TableTreeColumn,
+	TableSelection,
+	PagingPanel,
+} from '@devexpress/dx-react-grid-material-ui';
+import {
+	SelectionState,
+	PagingState,
+	IntegratedPaging,
+	IntegratedSelection,
+} from '@devexpress/dx-react-grid';
+import {
+	Box,
+	Grid,
+	MenuItem,
+	Paper,
+	Pagination as DefaultPagination,
+	TextField,
+	Typography,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import ModalConfirm from '../ModalConfirm';
+import { useRouter } from 'next/router';
+import DeleteCard from '../DeleteCard';
+
+const useStyles = makeStyles(() => ({
+	root: {
+		'& .Mui-selected': {
+			backgroundColor: '#C22026',
+			color: '#fff',
+			fontWeight: '700',
+			'&:hover': {
+				backgroundColor: '#9B1C25 !important',
+			},
+		},
+	},
+}));
+
+type Props = React.ComponentProps<any> & {
+	loading: boolean;
+	rows: any[] | any;
+	columns: any[];
+	total: number;
+	page: number;
+	pageSize: number;
+	selectModels: boolean;
+	onHandlePageChange: (num: number) => void;
+	onHandlePageSize: (num: number | any) => void;
+	onConfirmDelete: (arr: [] | any) => void;
+	treeIconOnKey: string;
+	childKey: string;
+	custom?: any;
+};
+
+const TableTree: React.FC<Props> = (props: Props) => {
+	const {
+		loading,
+		rows = [],
+		columns = [],
+		page,
+		pageSize,
+		onHandlePageChange,
+		onHandlePageSize,
+		onConfirmDelete,
+		treeIconOnKey,
+		childKey,
+		custom,
+		defaultSelection = [],
+		rowKey = 'id',
+	} = props;
+	const [selection, setSelection] = useState(defaultSelection);
+	const [confirmDialog, setConfirmDialog] = useState<any>({ isOpen: false, action: undefined });
+	const classes = useStyles();
+	const { query } = useRouter();
+	const getChildRows = (row: any, rootRows: any) => (row ? row[`${childKey}`] : rootRows);
+
+	console.log(selection);
+	const onSelectionChange = useCallback((selected) => {
+		setSelection(selected);
+	}, []);
+
+	const clearSelectionChange = useCallback(() => {
+		setSelection([]);
+	}, []);
+
+	const handleDelete = useCallback(() => {
+		setConfirmDialog({
+			isOpen: true,
+			action: () => {
+				setConfirmDialog({ ...confirmDialog, isOpen: false });
+				onConfirmDelete(setSelection);
+			},
+		});
+	}, [confirmDialog, onConfirmDelete, setSelection]);
+
+	const Pagination = ({
+		currentPage,
+		onCurrentPageChange,
+		pageSize,
+		onPageSizeChange,
+		totalCount,
+	}: any) => {
+		return (
+			<Grid display={'flex'} alignItems={'center'} justifyContent={'flex-end'} gap={5} padding={5}>
+				<Typography>
+					Hiện {pageSize * (page - 1) + 1} -{' '}
+					{pageSize * page > totalCount ? totalCount : pageSize * page} trong {totalCount} kết quả
+				</Typography>
+				<DefaultPagination
+					className={classes.root}
+					count={Math.ceil(rows.length / pageSize) || 1}
+					variant="outlined"
+					defaultPage={Number(currentPage + 1 || query.page)}
+					onChange={(_, pageNumber) => {
+						onHandlePageChange(pageNumber);
+						onCurrentPageChange(pageNumber - 1);
+					}}
+					disabled={loading}
+				/>
+				<TextField
+					label={`${pageSize}/Trang`}
+					defaultValue=""
+					select
+					onChange={(value) => {
+						onHandlePageSize(value.target.value);
+						onPageSizeChange(value.target.value);
+					}}
+					disabled={loading}
+				>
+					<MenuItem value={10}>10/Trang</MenuItem>
+					<MenuItem value={20}>20/Trang</MenuItem>
+					<MenuItem value={50}>50/Trang</MenuItem>
+					<MenuItem value={100}>100/Trang</MenuItem>
+				</TextField>
+			</Grid>
+		);
+	};
+
+	return (
+		<>
+			<Box sx={{ width: '100%', padding: '20px' }}>
+				<DeleteCard
+					clearCheckedRows={clearSelectionChange}
+					total={selection}
+					onDelete={handleDelete}
+				/>
+				<Paper>
+					<GridTable rows={rows} columns={columns} getRowId={(row: any) => row[`${rowKey}`]}>
+						{custom && custom?.map((item: any) => item)}
+						<PagingState defaultCurrentPage={0} pageSize={pageSize} />
+						<IntegratedPaging />
+						<TreeDataState />
+						<CustomTreeData getChildRows={getChildRows} />
+						<SelectionState selection={selection} onSelectionChange={onSelectionChange} />
+						<IntegratedSelection />
+						<Table />
+						<TableHeaderRow />
+						<PagingPanel containerComponent={Pagination} />
+						<TableTreeColumn for={treeIconOnKey} showSelectAll />
+						<TableSelection showSelectAll highlightRow />
+					</GridTable>
+				</Paper>
+			</Box>
+			<ModalConfirm confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
+		</>
+	);
+};
+
+export default TableTree;
