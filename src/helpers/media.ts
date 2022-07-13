@@ -3,18 +3,18 @@ import { uploadFile } from '../features/upload/uploadAPI';
 
 export const getPathFileFromServer = async (files: any[]) => {
 	const formData = new FormData();
-
 	files?.forEach((file) => {
 		if (file?.file) {
 			formData.append('file', file.file);
 		} else if (file?.originFileObj) {
 			formData.append('file', file.originFileObj);
+		} else {
+			if (typeof file == 'object') formData.append('file', file);
 		}
 	});
 
 	try {
 		const hasFiles = formData.get('file');
-
 		if (hasFiles) {
 			const { data, success }: any = await uploadFile({ data: formData });
 			if (!success) {
@@ -23,7 +23,7 @@ export const getPathFileFromServer = async (files: any[]) => {
 			let index = -1;
 
 			return files?.map((item) => {
-				if (item?.file || item?.originFileObj) {
+				if (item?.file || item?.originFileObj || item) {
 					index += 1;
 					return data[index];
 				}

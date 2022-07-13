@@ -18,11 +18,16 @@ const DeleteCard: React.FC<Props> = ({ total, clearCheckedRows, onDelete }) => {
 						padding: '20px',
 						marginBottom: '20px',
 						display: 'flex',
+						justifyContent: 'space-between',
 					}}
 				>
 					<Grid xs={6} display={'flex'} gap={5}>
 						Đã chọn {total}
-						<Typography color={'red'} style={{ cursor: 'pointer' }} onClick={clearCheckedRows}>
+						<Typography
+							color={'red'}
+							style={{ cursor: 'pointer' }}
+							onClick={clearCheckedRows}
+						>
 							Huỷ
 						</Typography>
 					</Grid>

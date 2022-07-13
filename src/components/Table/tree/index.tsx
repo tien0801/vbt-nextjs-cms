@@ -22,11 +22,22 @@ import {
 	Pagination as DefaultPagination,
 	TextField,
 	Typography,
+	CircularProgress,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import ModalConfirm from '../ModalConfirm';
 import { useRouter } from 'next/router';
 import DeleteCard from '../DeleteCard';
+import NoData from '../NoData';
+
+const LoadingState = ({ loading, columnCount }: any) => (
+	<td
+		colSpan={columnCount + 1}
+		style={{ textAlign: 'center', verticalAlign: 'middle', paddingTop: '30px' }}
+	>
+		<big>{loading ? <CircularProgress size={28} /> : <NoData />}</big>
+	</td>
+);
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -72,14 +83,25 @@ const TableTree: React.FC<Props> = (props: Props) => {
 		custom,
 		defaultSelection = [],
 		rowKey = 'id',
+		total,
 	} = props;
 	const [selection, setSelection] = useState(defaultSelection);
 	const [confirmDialog, setConfirmDialog] = useState<any>({ isOpen: false, action: undefined });
 	const classes = useStyles();
 	const { query } = useRouter();
 	const getChildRows = (row: any, rootRows: any) => (row ? row[`${childKey}`] : rootRows);
+	function checkChildren(arr: any) {
+		return arr.map((item: any) => {
+			let children = null;
+			if (item[childKey] && item[childKey].length > 0)
+				children = checkChildren(item[childKey]);
 
-	console.log(selection);
+			return {
+				...item,
+				children,
+			};
+		});
+	}
 	const onSelectionChange = useCallback((selected) => {
 		setSelection(selected);
 	}, []);
@@ -89,14 +111,17 @@ const TableTree: React.FC<Props> = (props: Props) => {
 	}, []);
 
 	const handleDelete = useCallback(() => {
-		setConfirmDialog({
-			isOpen: true,
-			action: () => {
-				setConfirmDialog({ ...confirmDialog, isOpen: false });
-				onConfirmDelete(setSelection);
-			},
-		});
-	}, [confirmDialog, onConfirmDelete, setSelection]);
+		if (onConfirmDelete) {
+			setConfirmDialog({
+				isOpen: true,
+				action: () => {
+					setConfirmDialog({ ...confirmDialog, isOpen: false });
+					onConfirmDelete(selection);
+					setSelection([]);
+				},
+			});
+		}
+	}, [confirmDialog, onConfirmDelete, selection]);
 
 	const Pagination = ({
 		currentPage,
@@ -106,10 +131,17 @@ const TableTree: React.FC<Props> = (props: Props) => {
 		totalCount,
 	}: any) => {
 		return (
-			<Grid display={'flex'} alignItems={'center'} justifyContent={'flex-end'} gap={5} padding={5}>
+			<Grid
+				display={'flex'}
+				alignItems={'center'}
+				justifyContent={'flex-end'}
+				gap={5}
+				padding={5}
+			>
 				<Typography>
-					Hiện {pageSize * (page - 1) + 1} -{' '}
-					{pageSize * page > totalCount ? totalCount : pageSize * page} trong {totalCount} kết quả
+					Hiện {total > 0 ? pageSize * (page - 1) + 1 : 0}-{' '}
+					{pageSize * page > totalCount ? totalCount : pageSize * page} trong {total} kết
+					quả
 				</Typography>
 				<DefaultPagination
 					className={classes.root}
@@ -141,24 +173,35 @@ const TableTree: React.FC<Props> = (props: Props) => {
 		);
 	};
 
+	const renderLoadingState = () => {
+		return <LoadingState columnCount={columns.length} loading={loading} />;
+	};
+
 	return (
 		<>
 			<Box sx={{ width: '100%', padding: '20px' }}>
 				<DeleteCard
 					clearCheckedRows={clearSelectionChange}
-					total={selection}
+					total={selection?.length}
 					onDelete={handleDelete}
 				/>
 				<Paper>
-					<GridTable rows={rows} columns={columns} getRowId={(row: any) => row[`${rowKey}`]}>
+					<GridTable
+						rows={checkChildren(rows)}
+						columns={columns}
+						getRowId={(row: any) => row[`${rowKey}`]}
+					>
 						{custom && custom?.map((item: any) => item)}
 						<PagingState defaultCurrentPage={0} pageSize={pageSize} />
 						<IntegratedPaging />
 						<TreeDataState />
 						<CustomTreeData getChildRows={getChildRows} />
-						<SelectionState selection={selection} onSelectionChange={onSelectionChange} />
+						<SelectionState
+							selection={selection}
+							onSelectionChange={onSelectionChange}
+						/>
 						<IntegratedSelection />
-						<Table />
+						<Table noDataCellComponent={renderLoadingState} />
 						<TableHeaderRow />
 						<PagingPanel containerComponent={Pagination} />
 						<TableTreeColumn for={treeIconOnKey} showSelectAll />

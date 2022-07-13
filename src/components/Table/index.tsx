@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import DeleteCard from './DeleteCard';
 import ModalConfirm from './ModalConfirm';
+import Nodata from './NoData';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -35,11 +36,13 @@ type Props = React.ComponentProps<typeof DataGrid> & {
 	page: number;
 	pageSize: number;
 	selectModels?: boolean;
-	onHandlePageChange: (num: number) => void;
-	onHandlePageSize: (num: number | any) => void;
+	onHandlePageChange?: (num: number) => void;
+	onHandlePageSize?: (num: number | any) => void;
 	selectedRows?: string[];
 	setSelectedRows?: (rows: string[]) => void;
 	onConfirmDelete?: (arr: [] | any) => void;
+	onSelectedRows?: (arr: [] | any, rows: any) => void;
+	noPagination?: boolean;
 };
 
 const TableLayout: React.FC<Props> = (props: Props) => {
@@ -56,6 +59,8 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 		selectedRows,
 		setSelectedRows,
 		onConfirmDelete,
+		onSelectedRows,
+		noPagination,
 		...otherProps
 	} = props;
 
@@ -63,7 +68,10 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 	const { query } = useRouter();
 
 	const [selectionModel, setSelectionModel] = useState<any[]>(selectedRows || []);
-	const [confirmDialog, setConfirmDialog] = useState<any>({ isOpen: false, action: undefined });
+	const [confirmDialog, setConfirmDialog] = useState<any>({
+		isOpen: false,
+		action: undefined,
+	});
 
 	const clearSelectedRows = useCallback(() => {
 		setSelectedRows && setSelectedRows([]);
@@ -77,30 +85,43 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 				action: () => {
 					setConfirmDialog({ ...confirmDialog, isOpen: false });
 					onConfirmDelete(selectionModel);
+					setSelectionModel([]);
 				},
 			});
 		}
 	}, [confirmDialog, onConfirmDelete, selectionModel]);
 
+	const onChangeSelectedRows = useCallback(
+		(ids: any) => {
+			const selectedIDs = new Set(ids);
+			const selectedRowData = rows.filter((row: any) => selectedIDs.has(row.id));
+			setSelectedRows && setSelectedRows(ids);
+			setSelectionModel(ids);
+			onSelectedRows && onSelectedRows(ids, selectedRowData);
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[rows, onSelectedRows]
+	);
+
 	const Pagination = () => (
-		<Grid display='flex' alignItems='center' justifyContent='flex-end' gap={5} padding={5}>
+		<Grid display="flex" alignItems="center" justifyContent="flex-end" gap={5} padding={5}>
 			<Typography>
-				Hiện {pageSize * (page - 1) + 1} - {pageSize * page > total ? total : pageSize * page} trong{' '}
-				{total} kết quả
+				Hiện {total > 0 ? pageSize * (page - 1) + 1 : 0} -{' '}
+				{pageSize * page > total ? total : pageSize * page} trong {total} kết quả
 			</Typography>
 			<DefaultPagination
 				className={classes.root}
-				count={Math.ceil(rows.length / pageSize) || 1}
+				count={Math.ceil(total / pageSize) || 1}
 				variant="outlined"
 				defaultPage={Number(page || query.page)}
-				onChange={(_, pageNumber) => onHandlePageChange(pageNumber)}
+				onChange={(_, pageNumber) => onHandlePageChange && onHandlePageChange(pageNumber)}
 				disabled={loading}
 			/>
 			<TextField
 				label={`${pageSize}/Trang`}
 				defaultValue=""
 				select
-				onChange={(value) => onHandlePageSize(value.target.value)}
+				onChange={(value) => onHandlePageSize && onHandlePageSize(value.target.value)}
 				disabled={loading}
 			>
 				<MenuItem value={10}>10/Trang</MenuItem>
@@ -111,6 +132,7 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 		</Grid>
 	);
 
+	const NoPaginate = () => <span></span>;
 	return (
 		<>
 			<Box sx={{ width: '100%', padding: '20px' }}>
@@ -132,13 +154,13 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 					columns={columns}
 					pageSize={pageSize}
 					checkboxSelection={selectModels}
-					onSelectionModelChange={(ids: any) => {
-						setSelectedRows && setSelectedRows(ids);
-						setSelectionModel(ids);
-					}}
+					onSelectionModelChange={onChangeSelectedRows}
 					selectionModel={selectionModel}
 					pagination
-					components={{ Pagination }}
+					components={{
+						Pagination: noPagination ? NoPaginate : Pagination,
+						NoRowsOverlay: Nodata,
+					}}
 					keepNonExistentRowsSelected
 					page={page - 1}
 					{...otherProps}

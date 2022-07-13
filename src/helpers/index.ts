@@ -2,7 +2,7 @@ export const formatCurrency = (price: number) => {
 	let result: string | number = price;
 
 	if (!isNaN(result))
-		result = price.toLocaleString('en-US', { style: 'currency', currency: 'VND' });
+		result = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
 
 	return `${result}`;
 };
@@ -24,4 +24,16 @@ export const copyText = (textToCopy: string) => {
 			textArea.remove();
 		});
 	}
+};
+
+export const getErrorMessage = (customText: string, error: any) => {
+	const errors = (error as any)?.response?.data?.errors as any[];
+	let errorsText = '';
+	if (errors?.length > 0) {
+		errors.forEach((error: any) => {
+			errorsText += error.message + '\n';
+		});
+	}
+
+	return `${customText} - Lỗi: ${errorsText}`;
 };

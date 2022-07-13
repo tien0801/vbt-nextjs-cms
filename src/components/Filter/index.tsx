@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Card, CardActions, CardContent, Grid } from '@mui/material';
 import React from 'react';
@@ -7,11 +5,11 @@ import { Magnify, Close } from 'mdi-material-ui';
 import { FormikProvider } from 'formik';
 
 type Props = {
-	onFilter: VoidFunction;
-	onReFresh: VoidFunction;
+	onFilter: () => void;
+	onReFresh: () => void;
 	loading: boolean;
 	formik: any;
-    children: any
+	children: any;
 };
 
 const FilterLayout: React.FC<Props> = ({ children, onFilter, onReFresh, loading, formik }) => {

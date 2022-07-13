@@ -86,8 +86,11 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
 	return (
 		<>
 			{item.dropdownItems && item.dropdownItems.length > 0 ? (
-					
-				<AccordionDefault item={item} MenuItemTextMetaWrapper={MenuItemTextMetaWrapper} MenuNavLink={MenuNavLink} />
+				<AccordionDefault
+					item={item}
+					MenuItemTextMetaWrapper={MenuItemTextMetaWrapper}
+					MenuNavLink={MenuNavLink}
+				/>
 			) : (
 				<ListItem
 					disablePadding
@@ -111,7 +114,9 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
 							}}
 							sx={{
 								pl: 5.5,
-								...(item.disabled ? { pointerEvents: 'none' } : { cursor: 'pointer' }),
+								...(item.disabled
+									? { pointerEvents: 'none' }
+									: { cursor: 'pointer' }),
 							}}
 						>
 							<ListItemIcon
@@ -136,7 +141,10 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
 											height: 20,
 											fontWeight: 500,
 											marginLeft: 1.25,
-											'& .MuiChip-label': { px: 1.5, textTransform: 'capitalize' },
+											'& .MuiChip-label': {
+												px: 1.5,
+												textTransform: 'capitalize',
+											},
 										}}
 									/>
 								) : null}

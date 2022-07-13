@@ -9,7 +9,7 @@ const ReactQuill = typeof window === 'object' ? require('react-quill') : () => f
 type Props = {
 	value: string;
 	name: string;
-	formIk: any;
+	formik: any;
 };
 
 export const MODULES = {
@@ -29,6 +29,7 @@ export const MODULES = {
 		[{ color: [] }, { background: [] }], // dropdown with defaults from theme
 		[{ font: [] }],
 		[{ align: [] }],
+		['link', 'image', 'video'],
 
 		['clean'], // remove formatting button
 	],
@@ -55,7 +56,7 @@ export const FORMATS = [
 	'direction',
 ];
 
-const Editor: React.FC<Props> = ({ value, name, formIk }) => {
+const Editor: React.FC<Props> = ({ value, name, formik }) => {
 	useEffect(() => {
 		if (ReactQuill) {
 			const container = document.getElementById(name);
@@ -78,7 +79,7 @@ const Editor: React.FC<Props> = ({ value, name, formIk }) => {
 				modules={MODULES}
 				formats={FORMATS}
 				value={value}
-				onChange={(value: string) => formIk.setFieldValue(name, value)}
+				onChange={(value: string) => formik.setFieldValue(name, value)}
 			/>
 			<ErrorMessage name={name}>
 				{(msg) => (
