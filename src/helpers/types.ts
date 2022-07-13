@@ -3,6 +3,7 @@ export type ResponseCommon<T> = {
 	data?: T;
 	message?: string;
 	errorCode?: string;
+	errors?: any;
 };
 
 export type RequestCommon<T, U, V> = {

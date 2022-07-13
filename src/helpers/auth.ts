@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { AccountType, AuthorizedType } from '../models';
+import { AccountType, AuthorizedType } from '@/src/features/auth/page/login/saga/type';
 import { StorageKeys } from './constants';
 import StorageHelper from './storage';
 
