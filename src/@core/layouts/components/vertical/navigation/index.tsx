@@ -143,7 +143,7 @@ const Navigation = (props: Props) => {
 						) : (
 							<List
 								className="nav-items"
-								sx={{ transition: 'padding .25s ease', pr: 4.5 }}
+								sx={{ transition: 'padding .25s ease', pr: 4.5, pb: 8 }}
 							>
 								<VerticalNavItems
 									groupActive={groupActive}

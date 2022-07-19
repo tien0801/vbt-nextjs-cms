@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Dialog,
 	DialogTitle,
@@ -7,7 +6,7 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 type Props = {
 	confirmDialog: any;
@@ -15,17 +14,24 @@ type Props = {
 };
 
 const ModalConfirm: React.FC<Props> = ({ confirmDialog, setConfirmDialog }) => {
+	const onClose = useCallback(
+		() =>
+			setConfirmDialog({
+				isOpen: false,
+				action: undefined,
+			}),
+		[setConfirmDialog]
+	);
+
 	return (
-		<Dialog open={confirmDialog.isOpen}>
+		<Dialog open={confirmDialog.isOpen} onClose={onClose}>
 			<DialogTitle>
 				<Typography variant="subtitle1">Xác nhận xóa mục</Typography>
 				<Typography variant="subtitle2">Bạn chắc chắn xoá mục này không ?</Typography>
 			</DialogTitle>
 			<DialogContent></DialogContent>
 			<DialogActions>
-				<Button onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
-					Huỷ
-				</Button>
+				<Button onClick={onClose}>Huỷ</Button>
 				<Button color="primary" onClick={() => confirmDialog.action()}>
 					Xác nhận
 				</Button>

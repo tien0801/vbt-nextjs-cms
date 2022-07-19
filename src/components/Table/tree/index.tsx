@@ -123,13 +123,7 @@ const TableTree: React.FC<Props> = (props: Props) => {
 		}
 	}, [confirmDialog, onConfirmDelete, selection]);
 
-	const Pagination = ({
-		currentPage,
-		onCurrentPageChange,
-		pageSize,
-		onPageSizeChange,
-		totalCount,
-	}: any) => {
+	const Pagination = ({ onCurrentPageChange, pageSize, onPageSizeChange }: any) => {
 		return (
 			<Grid
 				display={'flex'}
@@ -140,14 +134,13 @@ const TableTree: React.FC<Props> = (props: Props) => {
 			>
 				<Typography>
 					Hiện {total > 0 ? pageSize * (page - 1) + 1 : 0}-{' '}
-					{pageSize * page > totalCount ? totalCount : pageSize * page} trong {total} kết
-					quả
+					{pageSize * page > total ? total : pageSize * page} trong {total} kết quả
 				</Typography>
 				<DefaultPagination
 					className={classes.root}
-					count={Math.ceil(rows.length / pageSize) || 1}
+					count={Math.ceil(total / pageSize) || 1}
 					variant="outlined"
-					defaultPage={Number(currentPage + 1 || query.page)}
+					defaultPage={Number(page || query.page)}
 					onChange={(_, pageNumber) => {
 						onHandlePageChange(pageNumber);
 						onCurrentPageChange(pageNumber - 1);

@@ -21,7 +21,9 @@ const GlobalStyles = (theme: Theme) => {
 				'& .ps__thumb-y': {
 					width: 4,
 					backgroundColor:
-						theme.palette.mode === 'light' ? '#C2C4D1 !important' : '#504B6D !important',
+						theme.palette.mode === 'light'
+							? '#C2C4D1 !important'
+							: '#504B6D !important',
 				},
 				'&:hover, &:focus, &.ps--clicking': {
 					backgroundColor: 'transparent !important',
@@ -58,10 +60,6 @@ const GlobalStyles = (theme: Theme) => {
 			height: '100%',
 		},
 		'.ql-container': {
-			height: '100% !important',
-		},
-
-		'.ql-editor': {
 			height: '100% !important',
 		},
 	};

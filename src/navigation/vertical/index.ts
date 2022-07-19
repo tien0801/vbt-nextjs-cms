@@ -8,8 +8,10 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import SpokeIcon from '@mui/icons-material/Spoke';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import { AccountBox } from 'mdi-material-ui';
 import HomeOutline from 'mdi-material-ui/HomeOutline';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
 
@@ -31,7 +33,12 @@ const navigation = (): VerticalNavItemsType => {
 			path: '/banner',
 			children: [
 				{ title: 'Thêm mới banner', icon: AddIcon, path: '/banner/create', key: 'create' },
-				{ title: 'Cập nhật banner', icon: SystemUpdateAltIcon, path: '/banner/[id]', key: '[id]' },
+				{
+					title: 'Cập nhật banner',
+					icon: SystemUpdateAltIcon,
+					path: '/banner/[id]',
+					key: '[id]',
+				},
 			],
 		},
 		{
@@ -40,7 +47,12 @@ const navigation = (): VerticalNavItemsType => {
 			icon: CollectionsBookmarkIcon,
 			path: '/collection',
 			children: [
-				{ title: 'Thêm mới bộ sưu tập', icon: AddIcon, path: '/collection/create', key: 'create' },
+				{
+					title: 'Thêm mới bộ sưu tập',
+					icon: AddIcon,
+					path: '/collection/create',
+					key: 'create',
+				},
 				{
 					title: 'Cập nhật bộ sưu tập',
 					icon: SystemUpdateAltIcon,
@@ -64,12 +76,6 @@ const navigation = (): VerticalNavItemsType => {
 					icon: AccountBox,
 				},
 				{
-					title: 'Tài khoản khách hàng',
-					path: '/account',
-					key: 'account',
-					icon: AccountBox,
-				},
-				{
 					title: 'Tài khoản admin',
 					path: '/account-admin',
 					key: 'account-admin',
@@ -88,6 +94,12 @@ const navigation = (): VerticalNavItemsType => {
 							key: '[id]',
 						},
 					],
+				},
+				{
+					title: 'Tài khoản khách hàng',
+					path: '/account',
+					key: 'account',
+					icon: AccountBox,
 				},
 			],
 		},
@@ -120,6 +132,20 @@ const navigation = (): VerticalNavItemsType => {
 					key: '[id]',
 				},
 			],
+			dropdownItems: [
+				{
+					title: 'Nhóm lựa chọn',
+					icon: AddIcon,
+					path: '/option-groups',
+					key: 'option-groups',
+				},
+				{
+					title: 'Danh sách sản phẩm',
+					icon: AddIcon,
+					path: '/product',
+					key: 'list',
+				},
+			],
 		},
 		{
 			title: 'Đơn hàng',
@@ -128,7 +154,7 @@ const navigation = (): VerticalNavItemsType => {
 			key: 'order',
 			children: [
 				{
-					title: 'Cập nhật đơn hàng',
+					title: 'Chi tiết đơn hàng',
 					icon: AddIcon,
 					path: '/order/[id]',
 					key: '[id]',
@@ -146,7 +172,12 @@ const navigation = (): VerticalNavItemsType => {
 			icon: PostAddIcon,
 			path: '/content',
 			children: [
-				{ title: 'Thêm mới bài viết', icon: AddIcon, path: '/content/create', key: 'create' },
+				{
+					title: 'Thêm mới bài viết',
+					icon: AddIcon,
+					path: '/content/create',
+					key: 'create',
+				},
 				{
 					title: 'Cập nhật bài viết',
 					icon: SystemUpdateAltIcon,
@@ -199,6 +230,18 @@ const navigation = (): VerticalNavItemsType => {
 					],
 				},
 			],
+		},
+		{
+			key: 'store',
+			title: 'Cửa hàng',
+			icon: StorefrontIcon,
+			path: '/store',
+		},
+		{
+			key: 'dynamic-content',
+			title: 'Cấu hình trang',
+			icon: DynamicFeedIcon,
+			path: '/dynamic-content',
 		},
 	];
 };

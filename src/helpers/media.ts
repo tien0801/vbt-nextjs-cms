@@ -3,6 +3,7 @@ import { uploadFile } from '../features/upload/uploadAPI';
 
 export const getPathFileFromServer = async (files: any[]) => {
 	const formData = new FormData();
+
 	files?.forEach((file) => {
 		if (file?.file) {
 			formData.append('file', file.file);
@@ -15,15 +16,15 @@ export const getPathFileFromServer = async (files: any[]) => {
 
 	try {
 		const hasFiles = formData.get('file');
-		if (hasFiles) {
+		if (hasFiles && hasFiles !== 'null') {
 			const { data, success }: any = await uploadFile({ data: formData });
 			if (!success) {
-				return [];
+				return files;
 			}
 			let index = -1;
 
 			return files?.map((item) => {
-				if (item?.file || item?.originFileObj || item) {
+				if (item?.file || item?.originFileObj || typeof item == 'object') {
 					index += 1;
 					return data[index];
 				}
@@ -31,7 +32,7 @@ export const getPathFileFromServer = async (files: any[]) => {
 			});
 		}
 
-		throw new Error('No files');
+		throw new Error('No files to upload');
 	} catch (error) {
 		return files;
 	}

@@ -8,7 +8,7 @@ type Props = {
 
 const FormItemLabel: React.FC<Props> = ({ children, label, required }) => {
 	return (
-		<Box mb={4}>
+		<Box>
 			<Typography mb={2}>
 				{required && <span style={{ color: '#C22026', paddingRight: '5px' }}>*</span>}
 				{label}

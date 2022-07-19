@@ -14,9 +14,17 @@ type Props = {
 	visible: any;
 	setVisible: any;
 	title: string;
+	width?: string;
 };
 
-const DrawerComponent = ({ children, position = 'right', visible, setVisible, title }: Props) => {
+const DrawerComponent = ({
+	children,
+	position = 'right',
+	visible,
+	setVisible,
+	title,
+	width = '80vw',
+}: Props) => {
 	const toggleDrawer = () => (event: React.KeyboardEvent | React.MouseEvent) => {
 		if (
 			event.type === 'keydown' &&
@@ -33,11 +41,10 @@ const DrawerComponent = ({ children, position = 'right', visible, setVisible, ti
 			<Drawer anchor={position} open={visible} onClose={toggleDrawer()}>
 				<Box
 					sx={{
-						width: 'auto',
+						width: width,
 						padding: '20px',
 					}}
 					role="presentation"
-					onKeyDown={toggleDrawer()}
 				>
 					<Box
 						sx={{
