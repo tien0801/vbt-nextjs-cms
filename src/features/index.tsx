@@ -16,11 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function createData(
-  id: string,
-  name: string,
-  active: boolean,
-) {
+function createData(id: string, name: string, active: boolean) {
   return { id, name, active };
 }
 
@@ -73,7 +69,7 @@ const DashboardContainer: React.FC = () => {
                   Xin chào, Admin!
                 </Typography>
                 <Typography variant="subtitle2" gutterBottom>
-                  ADMIN | VM STYLE CMS
+                  ADMIN | VBT NEXTJS CMS
                 </Typography>
               </Box>
             </Box>
