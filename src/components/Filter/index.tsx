@@ -7,9 +7,9 @@ import { Form, FormikProvider } from 'formik';
 type Props = {
 	onFilter: () => void;
 	onReFresh: () => void;
-	loading: boolean;
-	formik: any;
-	children: any;
+	loading?: boolean;
+	formik?: any;
+	children?: any;
 };
 
 const FilterLayout: React.FC<Props> = ({ children, onFilter, onReFresh, loading, formik }) => {
@@ -25,7 +25,6 @@ const FilterLayout: React.FC<Props> = ({ children, onFilter, onReFresh, loading,
 						</CardContent>
 						<CardActions>
 							<LoadingButton
-								size="large"
 								type="submit"
 								sx={{ mr: 2 }}
 								variant="contained"
@@ -40,7 +39,6 @@ const FilterLayout: React.FC<Props> = ({ children, onFilter, onReFresh, loading,
 								loadingPosition="end"
 								endIcon={<Close />}
 								onClick={onReFresh}
-								size="large"
 								color="secondary"
 								variant="outlined"
 								loading={loading}

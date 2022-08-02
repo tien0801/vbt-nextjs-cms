@@ -14,19 +14,7 @@ import React, { useCallback, useState } from 'react';
 import DeleteCard from './DeleteCard';
 import ModalConfirm from './ModalConfirm';
 import Nodata from './NoData';
-
-const useStyles = makeStyles(() => ({
-	root: {
-		'& .Mui-selected': {
-			backgroundColor: '#C22026',
-			color: '#fff',
-			fontWeight: '700',
-			'&:hover': {
-				backgroundColor: '#9B1C25 !important',
-			},
-		},
-	},
-}));
+import { useTheme } from '@mui/material/styles';
 
 type Props = React.ComponentProps<typeof DataGrid> & {
 	loading: boolean;
@@ -46,6 +34,20 @@ type Props = React.ComponentProps<typeof DataGrid> & {
 };
 
 const TableLayout: React.FC<Props> = (props: Props) => {
+	const theme = useTheme();
+	const useStyles = makeStyles(() => ({
+		root: {
+			'& .Mui-selected': {
+				backgroundColor: theme.palette.primary.main,
+				color: '#fff',
+				fontWeight: '700',
+				'&:hover': {
+					backgroundColor: `${theme.palette.primary.dark} !important`,
+				},
+			},
+		},
+	}));
+
 	const {
 		loading,
 		rows = [],
@@ -118,11 +120,11 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 				disabled={loading}
 			/>
 			<TextField
-				label={`${pageSize}/Trang`}
-				defaultValue=""
+				defaultValue={10}
 				select
 				onChange={(value) => onHandlePageSize && onHandlePageSize(value.target.value)}
 				disabled={loading}
+				size="small"
 			>
 				<MenuItem value={10}>10/Trang</MenuItem>
 				<MenuItem value={20}>20/Trang</MenuItem>

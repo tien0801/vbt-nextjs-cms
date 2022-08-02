@@ -9,7 +9,7 @@ type Props = {
 const FormItemLabel: React.FC<Props> = ({ children, label, required }) => {
 	return (
 		<Box>
-			<Typography mb={2}>
+			<Typography mb={2} sx={{ fontSize: '15px' }}>
 				{required && <span style={{ color: '#C22026', paddingRight: '5px' }}>*</span>}
 				{label}
 			</Typography>

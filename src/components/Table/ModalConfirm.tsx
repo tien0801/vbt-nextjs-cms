@@ -11,9 +11,16 @@ import React, { useCallback } from 'react';
 type Props = {
 	confirmDialog: any;
 	setConfirmDialog: any;
+	sub_t?: string;
+	sub_b?: string;
 };
 
-const ModalConfirm: React.FC<Props> = ({ confirmDialog, setConfirmDialog }) => {
+const ModalConfirm: React.FC<Props> = ({
+	confirmDialog,
+	setConfirmDialog,
+	sub_t = 'Xác nhận xóa mục',
+	sub_b = 'Bạn chắc chắn xoá mục này không ?',
+}) => {
 	const onClose = useCallback(
 		() =>
 			setConfirmDialog({
@@ -26,8 +33,8 @@ const ModalConfirm: React.FC<Props> = ({ confirmDialog, setConfirmDialog }) => {
 	return (
 		<Dialog open={confirmDialog.isOpen} onClose={onClose}>
 			<DialogTitle>
-				<Typography variant="subtitle1">Xác nhận xóa mục</Typography>
-				<Typography variant="subtitle2">Bạn chắc chắn xoá mục này không ?</Typography>
+				<Typography variant="subtitle1">{sub_t}</Typography>
+				<Typography variant="subtitle2">{sub_b}</Typography>
 			</DialogTitle>
 			<DialogContent></DialogContent>
 			<DialogActions>
