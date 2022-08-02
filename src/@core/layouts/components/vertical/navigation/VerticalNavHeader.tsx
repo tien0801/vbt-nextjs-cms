@@ -46,6 +46,11 @@ const StyledLink = styled('a')({
 	alignItems: 'center',
 	textDecoration: 'none',
 });
+const StyledLogo = styled('div')({
+	maxHeight: '50px',
+	display: 'flex',
+	alignItems: 'center',
+});
 
 const VerticalNavHeader = (props: Props) => {
 	// ** Props
@@ -58,8 +63,10 @@ const VerticalNavHeader = (props: Props) => {
 			) : (
 				<Link href="/" passHref>
 					<StyledLink>
-						<img src="/images/favicon.png" alt="" />
-						<HeaderTitle variant="h6" sx={{ ml: 3 }}>
+						<StyledLogo>
+							<img style={{ maxHeight: '40px' }} src="/images/favicon.png" alt="" />
+						</StyledLogo>
+						<HeaderTitle variant="h6" sx={{ ml: 2 }}>
 							{themeConfig.templateName}
 						</HeaderTitle>
 					</StyledLink>
