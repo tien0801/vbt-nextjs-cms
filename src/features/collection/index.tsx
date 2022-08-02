@@ -29,19 +29,19 @@ const CollectionComponent: React.FC = () => {
 		console.log(values);
 	};
 
-	const formik = useFormik<FormikDataType>({
+	const formikBag = useFormik<FormikDataType>({
 		initialValues: initValues,
 		onSubmit: handleSubmit,
 	});
 
 	const onFilter = () => {
-		formik.submitForm();
+		formikBag.submitForm();
 	};
 
 	const onClear = () => {
-		console.log(formik.values);
+		console.log(formikBag.values);
 
-		formik.resetForm();
+		formikBag.resetForm();
 	};
 
 	const handlePageSize = useCallback((num: number) => {
@@ -62,8 +62,13 @@ const CollectionComponent: React.FC = () => {
 
 	return (
 		<Grid container spacing={6} mt={1}>
-			<FilterLayout formik={formik} loading={false} onFilter={onFilter} onReFresh={onClear}>
-				<FilterChild formik={formik} />
+			<FilterLayout
+				formik={formikBag}
+				loading={false}
+				onFilter={onFilter}
+				onReFresh={onClear}
+			>
+				<FilterChild formikBag={formikBag} />
 			</FilterLayout>
 			<Grid item xs={12}>
 				<Card>

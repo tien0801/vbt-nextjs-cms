@@ -8,7 +8,6 @@ type Props = {
 };
 
 const FilterChild: React.FC<Props> = ({ formik }) => {
-
 	return (
 		<>
 			<Grid item xs={12} sm={6}>
@@ -19,6 +18,7 @@ const FilterChild: React.FC<Props> = ({ formik }) => {
 						name={'title'}
 						fullWidth
 						placeholder={'Nhập dữ liệu'}
+						size="small"
 					/>
 				</FormItemLabel>
 			</Grid>
@@ -29,7 +29,8 @@ const FilterChild: React.FC<Props> = ({ formik }) => {
 						onChange={formik.handleChange}
 						name={'type'}
 						fullWidth
-						select 
+						select
+						size="small"
 					>
 						<MenuItem value={1}>Tuyển dụng</MenuItem>
 						<MenuItem value={2}>Khuyến mãi</MenuItem>

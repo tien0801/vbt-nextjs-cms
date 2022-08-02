@@ -16,7 +16,8 @@ export const initialValues: FormikDataType = {
 export const initialFilterValues: FormikFilterType = {
 	code: '',
 	description: '',
-	date: '',
+	from: '',
+	to: '',
 	active: false,
 };
 

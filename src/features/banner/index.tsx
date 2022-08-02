@@ -52,7 +52,12 @@ const Banner = () => {
 	return (
 		<React.Fragment>
 			<Grid container spacing={6} mt={1}>
-				<FilterLayout formik={formikBag} loading={false} onFilter={onFilter} onReFresh={onClear}>
+				<FilterLayout
+					formik={formikBag}
+					loading={false}
+					onFilter={onFilter}
+					onReFresh={onClear}
+				>
 					<Grid item xs={4}>
 						<TextField
 							defaultValue=""
@@ -62,6 +67,7 @@ const Banner = () => {
 							fullWidth
 							label={'Tên banner'}
 							placeholder={'Nhập dữ liệu'}
+							size="small"
 						/>
 					</Grid>
 				</FilterLayout>

@@ -27,6 +27,7 @@ export type FormikDataType = {
 export type FormikFilterType = {
 	code: string;
 	description: string;
-	date: string;
+	from: string;
+	to: string;
 	active: boolean;
 };

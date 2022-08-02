@@ -7,10 +7,9 @@ type Props = {
 };
 
 const FilterChild: React.FC<Props> = ({ formik }) => {
-
 	return (
 		<>
-			<Grid item xs={12} sm={6}>
+			<Grid item sm={12} md={6} lg={4}>
 				<TextField
 					value={formik.values.title}
 					onChange={formik.handleChange}
@@ -18,9 +17,10 @@ const FilterChild: React.FC<Props> = ({ formik }) => {
 					fullWidth
 					label={'Tên'}
 					placeholder={'Nhập dữ liệu'}
+					size="small"
 				/>
 			</Grid>
-			<Grid item xs={12} sm={6}>
+			<Grid item sm={12} md={6} lg={4}>
 				<TextField
 					value={formik.values.title}
 					onChange={formik.handleChange}
@@ -28,6 +28,7 @@ const FilterChild: React.FC<Props> = ({ formik }) => {
 					fullWidth
 					label={'Email'}
 					placeholder={'Nhập dữ liệu'}
+					size="small"
 				/>
 			</Grid>
 		</>

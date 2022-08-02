@@ -17,7 +17,7 @@ const PromotionComponent = () => {
 
 	const { promotionColumns } = useColumns();
 	const [loading, setLoading] = useState(false);
-	
+
 	const [data, setData] = useState(dataFake);
 	const [total, setTotal] = useState(10);
 	const [page, setPage] = useState(1);
@@ -68,43 +68,69 @@ const PromotionComponent = () => {
 
 	return (
 		<Grid container spacing={6} mt={1}>
-			<FilterLayout formik={formikBag} loading={false} onFilter={onFilter} onReFresh={onReset}>
-				<Grid item xs={6}>
+			<FilterLayout
+				formik={formikBag}
+				loading={false}
+				onFilter={onFilter}
+				onReFresh={onReset}
+			>
+				<Grid item sm={12} md={6} lg={4}>
 					<FormItemLabel label="Mã khuyến mãi">
 						<TextField
 							fullWidth
 							name="code"
 							value={formikBag.values.code}
 							onChange={formikBag.handleChange}
-							placeholder="Vui lòng nhập trường này"
+							placeholder="Nhập dữ liệu"
+							size="small"
 						/>
 					</FormItemLabel>
 				</Grid>
-				<Grid item xs={6}>
-					<FormItemLabel label="Mô tả">
-						<TextField
-							fullWidth
-							name="description"
-							value={formikBag.values.description}
-							onChange={formikBag.handleChange}
-							placeholder="Vui lòng nhập trường này"
-						/>
-					</FormItemLabel>
-				</Grid>
-				<Grid item xs={6}>
+				<Grid item sm={12} md={6} lg={4}>
 					<FormItemLabel label="Thời gian áp dụng">
-						<Grid item justifyContent="space-between" display="flex">
-							<LocalizationProvider dateAdapter={AdapterDateFns}>
-								<DatePicker
-									value={formikBag.values.date !== '' ? formikBag.values.date : null}
-									onChange={(newValue) => formikBag.setFieldValue('date', newValue)}
-									renderInput={(params) => <TextField fullWidth {...params} />}
-								/>
-							</LocalizationProvider>
-						</Grid>
+						<LocalizationProvider dateAdapter={AdapterDateFns}>
+							<Grid
+								item
+								xs={12}
+								display={'flex'}
+								justifyContent="space-between"
+								spacing={6}
+							>
+								<Grid item xs={6} style={{ paddingRight: '10px' }}>
+									<DatePicker
+										label="Ngày bắt đầu"
+										value={
+											formikBag.values.from !== ''
+												? formikBag.values.from
+												: null
+										}
+										onChange={(newValue) => {
+											formikBag.setFieldValue('from', newValue);
+										}}
+										renderInput={(params) => (
+											<TextField fullWidth size="small" {...params} />
+										)}
+									/>
+								</Grid>
+								<Grid item xs={6} style={{ paddingLeft: '10px' }}>
+									<DatePicker
+										label="Ngày kết thúc"
+										value={
+											formikBag.values.to !== '' ? formikBag.values.to : null
+										}
+										onChange={(newValue) => {
+											formikBag.setFieldValue('to', newValue);
+										}}
+										renderInput={(params) => (
+											<TextField fullWidth size="small" {...params} />
+										)}
+									/>
+								</Grid>
+							</Grid>
+						</LocalizationProvider>
 					</FormItemLabel>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item sm={12} md={6} lg={4}>
 					<FormItemLabel label="Kích hoạt">
 						<TextField
 							select
@@ -112,6 +138,7 @@ const PromotionComponent = () => {
 							name="active"
 							value={formikBag.values.active}
 							onChange={formikBag.handleChange}
+							size="small"
 						>
 							<MenuItem value="true">Kích hoạt</MenuItem>
 							<MenuItem value="false">Chưa kích hoạt</MenuItem>

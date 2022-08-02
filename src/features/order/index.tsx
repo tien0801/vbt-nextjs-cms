@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { FormikDataType } from './common/type';
 import FilterChild from './FilterChild';
-import rows from '../data/orders'
+import rows from '../data/orders';
 import useColumnsRender from './common/hook';
 
 const OrderComponent: React.FC = () => {
@@ -17,15 +17,15 @@ const OrderComponent: React.FC = () => {
 	const [pageSize, setPageSize] = useState(10);
 	const router = useRouter();
 	const { columns } = useColumnsRender();
-	
+
 	const initValues: FormikDataType = {
 		orderStatus: '',
 		store: '',
 		dateStart: '',
 		dateEnd: '',
 		type: '',
-		phone:'',
-		code: ''
+		phone: '',
+		code: '',
 	};
 
 	const handleSubmit = (values: FormikDataType) => {
@@ -45,19 +45,19 @@ const OrderComponent: React.FC = () => {
 		formik.resetForm();
 	};
 
-	const handlePageSize = useCallback( (num: number) => {
+	const handlePageSize = useCallback((num: number) => {
 		setPageSize(num);
-	}, [])
+	}, []);
 
-	const handlePageChange = useCallback( (num: number) => {
+	const handlePageChange = useCallback((num: number) => {
 		setPage(num);
-	},[])
+	}, []);
 
 	const conFirmDelete = useCallback((array: []) => {
 		console.log(array);
-	}, [])
+	}, []);
 
-	const createNew = () => {		
+	const createNew = () => {
 		router.push(`${router.pathname}/`);
 	};
 
@@ -68,7 +68,7 @@ const OrderComponent: React.FC = () => {
 			</FilterLayout>
 			<Grid item xs={12}>
 				<Card>
-					<Actions refresh={onClear} create={createNew} exportFile={createNew} />
+					<Actions refresh={onClear} create={createNew} />
 					<TableLayout
 						rows={rows}
 						columns={columns}
