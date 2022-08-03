@@ -10,7 +10,7 @@ type Props = {
 const FilterChild: React.FC<Props> = ({ formik }) => {
 	return (
 		<>
-			<Grid item xs={12} sm={6}>
+			<Grid item sm={12} md={6} lg={4}>
 				<FormItemLabel label={'Tiêu đề'}>
 					<TextField
 						value={formik.values.title}
@@ -22,7 +22,7 @@ const FilterChild: React.FC<Props> = ({ formik }) => {
 					/>
 				</FormItemLabel>
 			</Grid>
-			<Grid item xs={12} sm={6}>
+			<Grid item sm={12} md={6} lg={4}>
 				<FormItemLabel label={'Loại bài viết'}>
 					<TextField
 						value={formik.values.type}

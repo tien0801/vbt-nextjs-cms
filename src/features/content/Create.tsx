@@ -43,7 +43,7 @@ const CreateContent = () => {
 			title: '',
 			description: '',
 			content: '',
-			richContent: ''
+			richContent: '',
 		},
 		validationSchema: validationSchema,
 		onSubmit: handleSubmit,
@@ -59,7 +59,11 @@ const CreateContent = () => {
 			<Form onSubmit={onSubmit} action="">
 				<Card sx={{ width: '100%', padding: '24px 40px', marginTop: '20px' }}>
 					<Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-						<Grid container columnSpacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="space-between">
+						<Grid
+							container
+							columnSpacing={{ xs: 2, sm: 3, md: 4 }}
+							justifyContent="space-between"
+						>
 							<Grid item xs={5}>
 								<FormItemLabel label={'Ảnh máy tính'}>
 									<UploadImages {...initUploadProp} name={'imageUrl'} />
@@ -80,8 +84,13 @@ const CreateContent = () => {
 										name="title"
 										value={formikBag.values.title}
 										onChange={formikBag.handleChange}
-										error={formikBag.touched.title && Boolean(formikBag.errors.title)}
-										helperText={formikBag.touched.title && formikBag.errors.title}
+										error={
+											formikBag.touched.title &&
+											Boolean(formikBag.errors.title)
+										}
+										helperText={
+											formikBag.touched.title && formikBag.errors.title
+										}
 									/>
 								</FormItemLabel>
 							</Grid>
@@ -95,8 +104,14 @@ const CreateContent = () => {
 										name="description"
 										value={formikBag.values.description}
 										onChange={formikBag.handleChange}
-										error={formikBag.touched.description && Boolean(formikBag.errors.description)}
-										helperText={formikBag.touched.description && formikBag.errors.description}
+										error={
+											formikBag.touched.description &&
+											Boolean(formikBag.errors.description)
+										}
+										helperText={
+											formikBag.touched.description &&
+											formikBag.errors.description
+										}
 									/>
 								</FormItemLabel>
 							</Grid>
@@ -112,8 +127,13 @@ const CreateContent = () => {
 										name="content"
 										value={formikBag.values.content}
 										onChange={formikBag.handleChange}
-										error={formikBag.touched.content && Boolean(formikBag.errors.content)}
-										helperText={formikBag.touched.content && formikBag.errors.content}
+										error={
+											formikBag.touched.content &&
+											Boolean(formikBag.errors.content)
+										}
+										helperText={
+											formikBag.touched.content && formikBag.errors.content
+										}
 									/>
 								</FormItemLabel>
 							</Grid>

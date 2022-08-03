@@ -5,13 +5,49 @@ import { formatCurrency, copyText } from '@/src/helpers';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useNotify } from '@/src/helpers/notify';
 
-export const useColumnRender = () => {
+export const useMarks = () => {
+	const marks = useMemo(
+		() => [
+			{
+				value: 0,
+				label: 'Thấp',
+			},
+			{
+				value: 50,
+				label: 'Trung bình',
+			},
+			{
+				value: 100,
+				label: 'Cao',
+			},
+		],
+		[]
+	);
+
+	return marks;
+};
+
+export const kinds = [
+	{
+		value: 'Sale',
+		label: 'SP Bán',
+	},
+	{
+		value: 'Promotion',
+		label: 'SP Khuyến mãi',
+	},
+	{
+		value: 'Mixed',
+		label: 'SP Bán Và Khuyến Mãi',
+	},
+];
+
+export const useColumns = () => {
 	const { successNotify } = useNotify();
 
 	const columns = useMemo(() => {
 		return [
 			{
-				flex: 2,
 				headerName: 'Tên sản phẩm',
 				field: 'name',
 				renderCell: ({ row: record }: any) => {
@@ -23,6 +59,7 @@ export const useColumnRender = () => {
 						</Link>
 					);
 				},
+				width: 300,
 			},
 			{
 				flex: 1,
@@ -49,15 +86,15 @@ export const useColumnRender = () => {
 				headerName: 'Loại sản phẩm',
 				field: 'category',
 				renderCell: ({ row: record }: any) => {
-					return <Tag label={record?.category?.name || '-'} color="default" />;
+					return <Tag label={record?.category} color="default" />;
 				},
 			},
 			{
 				flex: 1,
-				headerName: 'Giá mặc định',
-				field: 'price',
+				headerName: 'Giá bán lẻ',
+				field: 'salePrice',
 				renderCell: ({ row: record }: any) => {
-					return <span>{formatCurrency(record.price)}</span>;
+					return <span>{formatCurrency(record.salePrice)}</span>;
 				},
 			},
 			{
@@ -89,5 +126,5 @@ export const useColumnRender = () => {
 		];
 	}, [successNotify]);
 
-	return { columns };
+	return columns;
 };

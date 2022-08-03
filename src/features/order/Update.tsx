@@ -37,8 +37,8 @@ const UpdateOrder = () => {
 
 	const columns = [
 		{ field: 'name', headerName: 'Tên sản phẩm', flex: 1 },
+		{ field: 'description', headerName: 'Mô tả', flex: 1 },
 		{ field: 'quatity', headerName: 'Số lượng', flex: 1 },
-		{ field: 'sale', headerName: 'Khuyến mãi', flex: 1 },
 		{
 			field: 'total',
 			headerName: 'Tổng tiền',
@@ -46,7 +46,10 @@ const UpdateOrder = () => {
 		},
 	];
 
-	const rows = [{ id: 1, name: 'Áo', quatity: '1', sale: '', total: '100.000đ' }];
+	const rows = [
+		{ id: 1, name: 'Áo', description: 'lorem ispum', quatity: '1', total: '100.000đ' },
+		{ id: 2, name: 'Quần', description: 'abc mô tả', quatity: '2', total: '300.000đ' },
+	];
 
 	const current = 'pending';
 
@@ -75,6 +78,29 @@ const UpdateOrder = () => {
 							</Typography>
 							<Typography variant="body1" sx={{ mb: 3 }}>
 								Cửa hàng: Quận 10, Thành phố Hồ Chí Minh, Việt Nam
+							</Typography>
+
+							<Typography variant="h6" sx={{ mb: 3, mt: 9 }}>
+								Thông tin giao hàng
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Số điện thoại: 0900910292
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Địa chỉ: 123 duong so 5
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Ghi chú: Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+								Consequuntur, quo.
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Thời gian đặt: 09:59:05 02/08/2022
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Thời gian giao hàng dự kiến: 09:59:05 02/08/2022
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Đơn vị vận chuyển: GHN
 							</Typography>
 						</Grid>
 						<Grid item xs={6}>
@@ -114,7 +140,11 @@ const UpdateOrder = () => {
 							<Typography variant="body1" sx={{ mb: 3 }}>
 								Tổng đơn hàng: <span style={{ fontWeight: 700 }}>5.104.000 ₫</span>{' '}
 							</Typography>
-							<Form onSubmit={onSubmit} action="" style={{ display: 'flex', gap: 15 }}>
+							<Form
+								onSubmit={onSubmit}
+								action=""
+								style={{ display: 'flex', gap: 15 }}
+							>
 								<TextField
 									onChange={formikBag.handleChange}
 									value={formikBag.values.status}
@@ -125,7 +155,16 @@ const UpdateOrder = () => {
 								>
 									{orderStatus.map((e, i) => {
 										return (
-											<MenuItem style={i == itemActive ? { fontWeight: 700 } : undefined} disabled={i <= itemActive ? true : false} key={i} value={e.status}>
+											<MenuItem
+												style={
+													i == itemActive
+														? { fontWeight: 700 }
+														: undefined
+												}
+												disabled={i <= itemActive ? true : false}
+												key={i}
+												value={e.status}
+											>
 												{e.name}
 											</MenuItem>
 										);
@@ -133,7 +172,28 @@ const UpdateOrder = () => {
 								</TextField>
 								<Button type="submit">Cập nhật</Button>
 							</Form>
+
+							<Typography variant="h6" sx={{ mb: 3, mt: 9 }}>
+								Thông tin thanh toán
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Phương thức thanh toán: <Tag label="COD" color="default" />{' '}
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Trạng thái thanh toán:{' '}
+								<Tag label="Chưa thanh toán" color="default" />{' '}
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Tổng đơn hàng: 590.007 VND
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Giảm giá: 0 VND
+							</Typography>
+							<Typography variant="body1" sx={{ mb: 3 }}>
+								Đã thanh toán: <strong>622.907 VND</strong>
+							</Typography>
 						</Grid>
+
 						<Grid xs={12} item>
 							<Typography sx={{ mt: 3 }} variant="h6">
 								Thông tin sản phẩm

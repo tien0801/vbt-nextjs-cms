@@ -8,13 +8,13 @@ import {
 	Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DeleteCard from './DeleteCard';
 import ModalConfirm from './ModalConfirm';
 import Nodata from './NoData';
-import { useTheme } from '@mui/material/styles';
 
 type Props = React.ComponentProps<typeof DataGrid> & {
 	loading: boolean;
@@ -27,6 +27,7 @@ type Props = React.ComponentProps<typeof DataGrid> & {
 	onHandlePageChange?: (num: number) => void;
 	onHandlePageSize?: (num: number | any) => void;
 	selectedRows?: string[];
+	selectedRowsFull?: any[];
 	setSelectedRows?: (rows: string[]) => void;
 	onConfirmDelete?: (arr: [] | any) => void;
 	onSelectedRows?: (arr: [] | any, rows: any) => void;
@@ -47,7 +48,6 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 			},
 		},
 	}));
-
 	const {
 		loading,
 		rows = [],
@@ -59,6 +59,7 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 		onHandlePageChange,
 		onHandlePageSize,
 		selectedRows,
+		selectedRowsFull,
 		setSelectedRows,
 		onConfirmDelete,
 		onSelectedRows,
@@ -74,6 +75,12 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 		isOpen: false,
 		action: undefined,
 	});
+
+	useEffect(() => {
+		if (selectedRows) {
+			setSelectionModel(selectedRows);
+		}
+	}, [selectedRows]);
 
 	const clearSelectedRows = useCallback(() => {
 		setSelectedRows && setSelectedRows([]);
@@ -95,11 +102,20 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 
 	const onChangeSelectedRows = useCallback(
 		(ids: any) => {
-			const selectedIDs = new Set(ids);
-			const selectedRowData = rows.filter((row: any) => selectedIDs.has(row.id));
 			setSelectedRows && setSelectedRows(ids);
 			setSelectionModel(ids);
-			onSelectedRows && onSelectedRows(ids, selectedRowData);
+
+			if (onSelectedRows) {
+				const selectedIDs = new Set(ids);
+				const selectedRowData = rows.filter((row: any) => selectedIDs.has(row.id));
+				const prevSelectedRowsFull = selectedRowsFull ? selectedRowsFull : [];
+				const initIds = new Set(prevSelectedRowsFull?.map((d) => d.id));
+				const merged = [
+					...prevSelectedRowsFull,
+					...selectedRowData.filter((d: any) => !initIds.has(d.id)),
+				];
+				onSelectedRows(ids, merged);
+			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[rows, onSelectedRows]
@@ -120,11 +136,11 @@ const TableLayout: React.FC<Props> = (props: Props) => {
 				disabled={loading}
 			/>
 			<TextField
-				defaultValue={10}
+				label={`${pageSize}/Trang`}
+				defaultValue=""
 				select
 				onChange={(value) => onHandlePageSize && onHandlePageSize(value.target.value)}
 				disabled={loading}
-				size="small"
 			>
 				<MenuItem value={10}>10/Trang</MenuItem>
 				<MenuItem value={20}>20/Trang</MenuItem>

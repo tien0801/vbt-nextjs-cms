@@ -7,10 +7,7 @@ import { Card, Grid, MenuItem, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { ProductType, ProductListRequest } from '../../product/api/type';
-import { initialFilterValues, useColumns, kinds } from '../../product/common/hooks';
-import { FormikFilterType } from '../../product/common/type';
-import * as actions from '../../product/saga/action';
+import { useColumns, kinds } from '../../product/common/hooks';
 
 type Props = {
 	onSelectedRows: any;
@@ -22,52 +19,44 @@ const ProductComponent = ({ onSelectedRows, initSelected = [] }: Props) => {
 	const search = router.query;
 	const dispatch = useAppDispatch();
 
-	const { columns } = useColumns();
+	const columns = useColumns();
 	const [loading, setLoading] = useState(false);
 
-	const [data, setData] = useState<ProductType[]>([]);
+	const [data, setData] = useState<any[]>([
+		{ id: 1, name: 'Sản phẩm 1' },
+		{ id: 2, name: 'Sản phẩm 2' },
+	]);
 	const [total, setTotal] = useState(10);
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
 
-	const onSubmit = useCallback(
-		(values: FormikFilterType) => {
-			setLoading(true);
-		},
-		[callGetProductList, pageSize]
-	);
+	const productList: any = [{ id: 1 }, { id: 2 }];
 
-	const formik = useFormik<FormikFilterType>({
-		initialValues: initialFilterValues,
+	const onSubmit = useCallback((values: any) => {
+		setLoading(true);
+	}, []);
+
+	const formik = useFormik<any>({
+		initialValues: {},
 		onSubmit,
 	});
 
 	const onReset = useCallback(() => {
 		formik.resetForm();
-		callGetProductList({});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onRefresh = useCallback(() => {
 		setLoading(true);
-		callGetProductList({ params: { page, page_size: pageSize } });
-	}, [callGetProductList, page, pageSize]);
+	}, []);
 
-	const onPageSize = useCallback(
-		(pageSize: number) => {
-			setPageSize(pageSize);
-			callGetProductList({ params: { page: 1, page_size: pageSize } });
-		},
-		[callGetProductList]
-	);
+	const onPageSize = useCallback((pageSize: number) => {
+		setPageSize(pageSize);
+	}, []);
 
-	const onPageChange = useCallback(
-		(page: number) => {
-			setPage(page);
-			callGetProductList({ params: { page, page_size: pageSize } });
-		},
-		[callGetProductList, pageSize]
-	);
+	const onPageChange = useCallback((page: number) => {
+		setPage(page);
+	}, []);
 
 	return (
 		<Grid container spacing={6} mt={1}>
@@ -85,6 +74,7 @@ const ProductComponent = ({ onSelectedRows, initSelected = [] }: Props) => {
 							placeholder="Nhập dữ liệu"
 							value={formik.values.name}
 							onChange={formik.handleChange}
+							size={'small'}
 						/>
 					</FormItemLabel>
 				</Grid>
@@ -96,6 +86,7 @@ const ProductComponent = ({ onSelectedRows, initSelected = [] }: Props) => {
 							placeholder="Nhập dữ liệu"
 							value={formik.values.sku}
 							onChange={formik.handleChange}
+							size={'small'}
 						/>
 					</FormItemLabel>
 				</Grid>
@@ -108,7 +99,11 @@ const ProductComponent = ({ onSelectedRows, initSelected = [] }: Props) => {
 							placeholder="Nhập dữ liệu"
 							value={formik.values.is_active}
 							onChange={formik.handleChange}
+							size={'small'}
 						>
+							<MenuItem value={''}>
+								<em>Không chọn</em>
+							</MenuItem>
 							<MenuItem value={'true'}>Đang bán</MenuItem>
 							<MenuItem value={'false'}>Không bán</MenuItem>
 						</TextField>
@@ -123,7 +118,11 @@ const ProductComponent = ({ onSelectedRows, initSelected = [] }: Props) => {
 							placeholder="Nhập dữ liệu"
 							value={formik.values.kind}
 							onChange={formik.handleChange}
+							size={'small'}
 						>
+							<MenuItem value={''}>
+								<em>Không chọn</em>
+							</MenuItem>
 							{kinds.map((kind) => (
 								<MenuItem key={kind.value} value={kind.value}>
 									{kind.label}

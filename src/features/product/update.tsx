@@ -12,7 +12,6 @@ const UpdateProduct = () => {
 			console.log(values);
 			if (values.file) {
 				console.log(`Saving ${values.inputName}: `, values.file);
-
 				// set value to formik
 				// do somthing
 			}
@@ -44,7 +43,7 @@ const UpdateProduct = () => {
 	return (
 		<FormikProvider value={formikBag}>
 			<Card sx={{ width: '100%', padding: '24px 40px', marginTop: '20px' }}>
-				<Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+				<Grid container spacing={6} justifyContent="space-between">
 					<Grid item xs={4}>
 						<FormItemLabel label={'Ảnh máy tính'}>
 							<UploadImages {...initUploadProp} name={'imageUrl'} />
@@ -113,7 +112,9 @@ const UpdateProduct = () => {
 									id="price"
 									name="price"
 									value={formikBag.values.price}
-									error={formikBag.touched.price && Boolean(formikBag.errors.price)}
+									error={
+										formikBag.touched.price && Boolean(formikBag.errors.price)
+									}
 									helperText={formikBag.touched.price && formikBag.errors.price}
 								/>
 							</FormItemLabel>
@@ -123,7 +124,9 @@ const UpdateProduct = () => {
 							<FormItemLabel label={'Còn hàng'}>
 								<Switch
 									defaultChecked
-									onChange={(e) => formikBag.setFieldValue('status', e.target.checked)}
+									onChange={(e) =>
+										formikBag.setFieldValue('status', e.target.checked)
+									}
 									value={formikBag.values.status}
 								/>
 							</FormItemLabel>
@@ -132,7 +135,9 @@ const UpdateProduct = () => {
 							<FormItemLabel label={'Hiển thị'}>
 								<Switch
 									defaultChecked
-									onChange={(e) => formikBag.setFieldValue('active', e.target.checked)}
+									onChange={(e) =>
+										formikBag.setFieldValue('active', e.target.checked)
+									}
 									value={formikBag.values.active}
 								/>
 							</FormItemLabel>
